@@ -1,4 +1,17 @@
-
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
 <div class="container">
-	<label>Username:</label><br>
+	<h1>Username: {{user.username}}</h1>
+	<p>Bio: {{user.bio}}</p>
+	<div class="form-group container">
+		<h1> You can enter a Tweet here! </h1>
+		<form method="POST" action="{% url 'addtweet' %}">
+			{% csrf_token %}
+			<label>Tweet:</label>
+			<input class="form-control" type="textarea" name="tweet"><br>
+			<button class="btn btn-primary" type="submit"> Tweet! </button>
+		</form>
+	</div>
 </div>
+{% endblock %}

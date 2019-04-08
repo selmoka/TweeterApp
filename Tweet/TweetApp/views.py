@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse, Http404
 from .models import Profile, Tweet, Comment
 from datetime import datetime
@@ -46,9 +46,23 @@ def signin(request):
 			return redirect('index')
 	return render(request, 'signin.html')
 
+def signout(request):
+	logout(request)
+	return render(request, 'signin.html')
+
 def profile(request):
-	if request.user.is_authenticated():
-		return render(request, 'profile.html', 'user': request.user)
+	if request.user.is_authenticated:
+		return render(request, 'profile.html', {'user': request.user})
+	else:
 		return render(request, 'signin.html')
 
-# Create your views here.
+def addtweet(request): 
+	if request.method == 'POST':
+		text_tweet = request.POST['tweet']
+		pub_date = datetime.now()
+		print(request.user)
+		p = Profile.objects.get(user=request.user)
+		t = Tweet(text_tweet=text_tweet, pub_date=pub_date, profile_tweet=p)
+		t.save()
+		return redirect('index')
+
