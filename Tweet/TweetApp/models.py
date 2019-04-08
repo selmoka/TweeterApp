@@ -13,12 +13,15 @@ class Profile(models.Model):
 		return self.user.username
 
 class Tweet(models.Model):
-	text = models.CharField(max_length=40)
+	text_tweet = models.CharField(max_length=40)
+	pub_date = models.DateTimeField('date published', default=None)
 	profile_tweet = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	def __str__(self):
-		return self.text
+		return self.text_tweet
 
 class Comment(models.Model):
-	text = models.CharField(max_length=40)
+	text_comment = models.CharField(max_length=40)
+	pub_date = models.DateTimeField('date published', default=None)
 	profile_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
-
+	def __str__(self):
+		return self.text_comment

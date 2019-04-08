@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Tweets List{% endblock %}
+{% block content %}
+		<div class="container">
+			<h1>Tweets List</h1>
+			<p>
+			<ul> {% for tweet in tweets %}
+				<li>
+					{{tweet.profile_tweet.user.username}}: {{tweet.text_tweet}} {{tweet.pub_date}}
+				</li>
+				 {% endfor %}
+			</ul>
+		</div>
+{% endblock %}
