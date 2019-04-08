@@ -46,5 +46,9 @@ def signin(request):
 			return redirect('index')
 	return render(request, 'signin.html')
 
+def profile(request):
+	if request.user.is_authenticated():
+		return render(request, 'profile.html', 'user': request.user)
+		return render(request, 'signin.html')
 
 # Create your views here.
