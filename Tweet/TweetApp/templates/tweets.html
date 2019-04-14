@@ -7,7 +7,11 @@
 			<ul class="list-group"> {% for tweet in tweets %}
 				<li class="list-group-item">
 					{{tweet.profile_tweet.user.username}}<br>
-					{{tweet.text_tweet}}<br>
+					{% if request.user.is_authenticated %}
+						<a href = "{% url 'addcomment' tweet.id %}">{{tweet.text_tweet}}</a><br>
+					{% else %}
+						{{tweet.text_tweet}}<br>
+					{% endif %}
 					{{tweet.pub_date}}
 				</li>
 				 {% endfor %}

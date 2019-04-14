@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from django.http import HttpResponse, Http404
 from .models import Profile, Tweet, Comment
 from datetime import datetime
@@ -44,6 +45,10 @@ def signin(request):
 		if user is not None:
 			login(request, user)
 			return redirect('index')
+		else:
+			# flash('This is error message', 'error')
+			messages.add_message(request, messages.ERROR, 'Wrong user or password')
+			return render(request, 'signin.html')
 	return render(request, 'signin.html')
 
 def signout(request):
@@ -66,3 +71,15 @@ def addtweet(request):
 		t.save()
 		return redirect('index')
 
+def addcomment(request, tweet_id): 
+	t = Tweet.objects.get(pk=tweet_id)
+	if request.method == 'POST':
+		text_comment = request.POST['comment']
+		pub_date = datetime.now()
+		p = Profile.objects.get(user=request.user)
+		c = Comment(text_comment=text_comment, pub_date=pub_date, profile_comment=p, tweet_comment=t)
+		c.save()
+		return redirect('index')
+	else:
+		return render(request, 'addcomment.html', { 'tweet_id':tweet_id, 
+			'text': t.text_tweet})

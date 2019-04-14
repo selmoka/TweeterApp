@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Add Comments{% endblock %}
+{% block content %}
+<div class="container">
+	<!-- <h1>Username: {{user.username}}</h1> -->
+	<!-- <p>Bio: {{user.bio}}</p> -->
+	<div class="form-group container">
+		<h1> Hi, {{user.username}}! You can add a comment for {{text}}! </h1>
+		<form method="POST" action="{% url 'addcomment' tweet_id %}">
+			{% csrf_token %}
+			<label>Comment:</label>
+			<input class="form-control" type="textarea" name="comment"><br>
+			<button class="btn btn-primary" type="submit"> Add </button>
+		</form>
+	</div>
+</div>
+{% endblock %}
