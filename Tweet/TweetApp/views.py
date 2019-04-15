@@ -72,6 +72,21 @@ def addtweet(request):
 		t.save()
 		return redirect('index')
 
+def deletetweet(request, tweet_id): 
+	if request.method == 'POST':
+		t = get_object_or_404(Tweet, pk=tweet_id)
+		t.delete()
+		# text_tweet = request.POST['tweet']
+		# pub_date = datetime.now()
+		# print(request.user)
+		# p = Profile.objects.get(user=request.user)
+		# t = Tweet(text_tweet=text_tweet, pub_date=pub_date, profile_tweet=p)
+		# t.save()
+		return redirect('index')
+	else:
+		return redirect('index')
+
+
 def addcomment(request, tweet_id): 
 	t = Tweet.objects.get(pk=tweet_id)
 	if request.method == 'POST':

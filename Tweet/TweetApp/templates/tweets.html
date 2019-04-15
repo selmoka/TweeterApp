@@ -13,9 +13,19 @@
 						{{tweet.text_tweet}}<br>
 					{% endif %}
 					{{tweet.pub_date}}
-					<!-- <form class="form-group" action="{% 'url' deletetweet %}">
-						<button class="btn btn-primary">Delete</button>
-					</form> -->
+					{{request.user}}
+					{{tweet.profile_tweet.user}}
+					{% if request.user == tweet.profile_tweet.user %}
+						<form method="POST" class="form-group" action="{% url 'deletetweet' tweet.id %}">
+						{% csrf_token %}
+							<button class="btn btn-primary">Delete</button>
+						</form>
+					{% else %}
+						<form class="form-group">
+						{% csrf_token %}
+							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
+						</form>
+					{% endif %}
 				</li>
 				 {% endfor %}
 			</ul>
