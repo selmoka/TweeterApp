@@ -15,53 +15,6 @@ def index(request):
 	}) 
 	# return HttpResponse('My page')
 
-def signup(request):
-	# vehicles = Vehicle.objects.all()
-	# return render(request, 'articles.html',{
-	# 	'articles': Article.objects.all().order_by('-pub_date')
-	# }) 
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		bio = request.POST['bio']
-		user = User.objects.create_user(username=username, password=password)
-		if user is not None:
-			user.save()
-			profile = Profile(bio=bio, user=user)
-			profile.save()
-			login(request, user)
-			return redirect('TweetApp:index')
-	return render(request, 'signup.html')
-
-def signin(request):
-	# vehicles = Vehicle.objects.all()
-	# return render(request, 'articles.html',{
-	# 	'articles': Article.objects.all().order_by('-pub_date')
-	# }) 
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(username=username, password=password)
-		print(user)
-		if user is not None:
-			login(request, user)
-			return redirect('index')
-		else:
-			# flash('This is error message', 'error')
-			messages.add_message(request, messages.ERROR, 'Wrong user or password')
-			return render(request, 'signin.html')
-	return render(request, 'signin.html')
-
-def signout(request):
-	logout(request)
-	return render(request, 'signin.html')
-
-def profile(request):
-	if request.user.is_authenticated:
-		return render(request, 'ProfileApp/profile.html', {'user': request.user})
-	else:
-		return render(request, 'signin.html')
-
 def addtweet(request): 
 	if request.method == 'POST':
 		text_tweet = request.POST['tweet']
@@ -73,7 +26,9 @@ def addtweet(request):
 		return redirect('index')
 
 def deletetweet(request, tweet_id): 
+	print(request.method)
 	if request.method == 'POST':
+		# request.method -> DELETE
 		t = get_object_or_404(Tweet, pk=tweet_id)
 		t.delete()
 		# text_tweet = request.POST['tweet']

@@ -8,7 +8,6 @@ from TweetApp.models import Comment, Tweet
 from django.core.files.storage import FileSystemStorage
 # from datetime import datetime
 
-
 def profile(request):
 	if request.user.is_authenticated:
 		print(request.user)
@@ -38,3 +37,44 @@ def addprofile(request):
 					return render(request, 'profile.html', {'profile': profile})
 		else:
 			return render(request, 'addprofile.html', {'profile': profile})
+
+def signin(request):
+	# vehicles = Vehicle.objects.all()
+	# return render(request, 'articles.html',{
+	# 	'articles': Article.objects.all().order_by('-pub_date')
+	# }) 
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		print(user)
+		if user is not None:
+			login(request, user)
+			return redirect('index')
+		else:
+			# flash('This is error message', 'error')
+			messages.add_message(request, messages.ERROR, 'Wrong user or password')
+			return render(request, 'signin.html')
+	return render(request, 'signin.html')
+
+def signup(request):
+	# vehicles = Vehicle.objects.all()
+	# return render(request, 'articles.html',{
+	# 	'articles': Article.objects.all().order_by('-pub_date')
+	# }) 
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		bio = request.POST['bio']
+		user = User.objects.create_user(username=username, password=password)
+		if user is not None:
+			user.save()
+			profile = Profile(bio=bio, user=user)
+			profile.save()
+			login(request, user)
+			return redirect('TweetApp:index')
+	return render(request, 'signup.html')
+
+def signout(request):
+	logout(request)
+	return render(request, 'signin.html')
