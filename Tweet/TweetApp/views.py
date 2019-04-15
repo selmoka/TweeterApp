@@ -44,6 +44,7 @@ def deletetweet(request, tweet_id):
 
 def addcomment(request, tweet_id): 
 	t = Tweet.objects.get(pk=tweet_id)
+	c = t.comment_set.all()
 	if request.method == 'POST':
 		text_comment = request.POST['comment']
 		pub_date = datetime.now()
@@ -58,4 +59,18 @@ def addcomment(request, tweet_id):
 			return redirect('index')
 	else:
 		return render(request, 'addcomment.html', { 'tweet_id':tweet_id, 
-			'text': t.text_tweet})
+			'text': t.text_tweet, 'comments': c})
+
+def deletecomment(request, comment_id): 
+	if request.method == 'POST':
+		c = get_object_or_404(Comment, pk=comment_id)
+		c.delete()
+		# text_tweet = request.POST['tweet']
+		# pub_date = datetime.now()
+		# print(request.user)
+		# p = Profile.objects.get(user=request.user)
+		# t = Tweet(text_tweet=text_tweet, pub_date=pub_date, profile_tweet=p)
+		# t.save()
+		return redirect('index')
+	else:
+		return redirect('index')

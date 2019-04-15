@@ -5,6 +5,25 @@
 	<!-- <h1>Username: {{user.username}}</h1> -->
 	<!-- <p>Bio: {{user.bio}}</p> -->
 	<div class="form-group container">
+		<ul class="list-group">
+		{% for comment in comments %}
+			<li class="list-group-item">
+			<div class="row">{{comment}} - by {{comment.profile_comment.user.username}} &nbsp;&nbsp;
+			{% if request.user == comment.profile_comment.user %}
+						<form method="POST" class="form-group" action="{% url 'deletecomment' comment.id %}">
+						{% csrf_token %}
+							<button class="btn btn-primary btn-sm">Delete</button>
+						</form>
+					{% else %}
+						<form class="form-group">
+						{% csrf_token %}
+							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
+						</form>
+					{% endif %}
+			</div>
+			</li>
+		{% endfor %}
+		</ul>
 		<h1> Hi, {{user.username}}! You can add a comment for {{text}}! </h1>
 		<form method="POST" action="{% url 'addcomment' tweet_id %}">
 			{% csrf_token %}
