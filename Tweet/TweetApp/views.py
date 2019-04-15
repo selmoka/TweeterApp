@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponse, Http404
-from .models import Profile, Tweet, Comment
+from .models import Tweet, Comment
+from ProfileApp.models import Profile
 from datetime import datetime
 
 # Create your views here.
@@ -57,7 +58,7 @@ def signout(request):
 
 def profile(request):
 	if request.user.is_authenticated:
-		return render(request, 'profile.html', {'user': request.user})
+		return render(request, 'ProfileApp/profile.html', {'user': request.user})
 	else:
 		return render(request, 'signin.html')
 
@@ -77,9 +78,14 @@ def addcomment(request, tweet_id):
 		text_comment = request.POST['comment']
 		pub_date = datetime.now()
 		p = Profile.objects.get(user=request.user)
-		c = Comment(text_comment=text_comment, pub_date=pub_date, profile_comment=p, tweet_comment=t)
-		c.save()
-		return redirect('index')
+		if p != None:
+			c = Comment(text_comment=text_comment, pub_date=pub_date, 
+			profile_comment=p, tweet_comment=t)
+			print(c)
+			c.save()
+			return redirect('index')
+		else:
+			return redirect('index')
 	else:
 		return render(request, 'addcomment.html', { 'tweet_id':tweet_id, 
 			'text': t.text_tweet})
