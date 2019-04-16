@@ -25,6 +25,15 @@
 						{% csrf_token %}
 							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
 						</form>
+						<form method="POST" class="form-group" action="{% url 'togglelike' tweet.id 'like' %}">
+						{% csrf_token %}
+							<button class="btn btn-primary">Toggle Like</button>
+						</form>
+					{% else %}
+						<form class="form-group">
+						{% csrf_token %}
+							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
+						</form>
 					{% endif %}
 				</li>
 				 {% endfor %}

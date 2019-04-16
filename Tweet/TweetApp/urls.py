@@ -10,6 +10,7 @@ urlpatterns = [
     # # path('TweetApp/profile', views.profile, name='profile'),
     path('TweetApp/addtweet', views.addtweet, name='addtweet'),
     path('TweetApp/deletetweet/<int:tweet_id>', views.deletetweet, name='deletetweet'),
+    path('TweetApp/togglelike/<int:tweet_id>/<str:status>', views.togglelike, name='togglelike'),
     path('TweetApp/addcomment/<int:tweet_id>', views.addcomment, name='addcomment'),
     path('TweetApp/deletecomment/<int:comment_id>', views.deletecomment, name='deletecomment'),
     # path('herald/articledetail/<int:article_id>', views.articledetail, name='articledetail'),

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponse, Http404
-from .models import Tweet, Comment
+from .models import Tweet, Comment, TweetLike
 from ProfileApp.models import Profile
 from datetime import datetime
 
@@ -23,6 +23,17 @@ def addtweet(request):
 		p = Profile.objects.get(user=request.user)
 		t = Tweet(text_tweet=text_tweet, pub_date=pub_date, profile_tweet=p)
 		t.save()
+		return redirect('index')
+
+def togglelike(request, tweet_id, status): 
+	if request.method == 'POST':
+		t = get_object_or_404(Tweet, pk=tweet_id)
+		tweet = t
+		p = Profile.objects.get(user=request.user)
+		t.profile = p
+		profile = request.user
+		l = TweetLike(tweet=t, profile=p, status=status)
+		l.save()
 		return redirect('index')
 
 def deletetweet(request, tweet_id): 
