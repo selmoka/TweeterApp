@@ -13,17 +13,25 @@
 						{{tweet.text_tweet}}<br>
 					{% endif %}
 					{{tweet.pub_date}}
-					{{request.user}}
-					{{tweet.profile_tweet.user}}
+			<!-- 		{{request.user}}
+					{{tweet.profile_tweet.user}} -->
+					<div class="container">
+					<p class="badge badge-light">
+						<!-- {{description|slice:"65"}} -->
+						<!-- titles|map('lower') -->
+						Likes {{tweet.tweet_likes.all|length}}
+					</p>
+					<br>
+					{% for like in tweet.tweet_likes.all %}
+						{{like}}
+					{% endfor %}
+					<p>
+					</div>
+					
 					{% if request.user == tweet.profile_tweet.user %}
 						<form method="POST" class="form-group" action="{% url 'deletetweet' tweet.id %}">
 						{% csrf_token %}
 							<button class="btn btn-primary">Delete</button>
-						</form>
-					{% else %}
-						<form class="form-group">
-						{% csrf_token %}
-							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
 						</form>
 						<form method="POST" class="form-group" action="{% url 'togglelike' tweet.id 'like' %}">
 						{% csrf_token %}
@@ -33,7 +41,7 @@
 						<form class="form-group">
 						{% csrf_token %}
 							<button class="btn btn-outline-primary btn-sm disabled">Delete</button>
-						</form>
+						</form>	
 					{% endif %}
 				</li>
 				 {% endfor %}

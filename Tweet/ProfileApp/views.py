@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponse, Http404
 from .models import Profile
-from TweetApp.models import Comment, Tweet
+from TweetApp.models import Comment, Tweet, TweetLike
 from django.core.files.storage import FileSystemStorage
 # from datetime import datetime
 

@@ -9,11 +9,10 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-	# vehicles = Vehicle.objects.all()
+	# liketweets = TweetLike.objects.all()
 	return render(request, 'tweets.html',{
 		'tweets': Tweet.objects.all().order_by('-pub_date')
 	}) 
-	# return HttpResponse('My page')
 
 def addtweet(request): 
 	if request.method == 'POST':
@@ -29,11 +28,24 @@ def togglelike(request, tweet_id, status):
 	if request.method == 'POST':
 		t = get_object_or_404(Tweet, pk=tweet_id)
 		tweet = t
-		p = Profile.objects.get(user=request.user)
+		try:
+			p = get_object_or_none(Profile, user=request.user)
+		except:
+			pass
 		t.profile = p
 		profile = request.user
-		l = TweetLike(tweet=t, profile=p, status=status)
-		l.save()
+		try:
+			tweet_status = get_object_or_404(tweet=t, profile=p)
+		except:
+			pass
+		if tweet_status != None:
+			print(tweet_status.status)
+			if tweet_status.status == 'like':
+				tweet_status.delete()
+		else: 
+			status='like'
+			l = TweetLike(tweet=t, profile=p, status=status)
+			l.save()
 		return redirect('index')
 
 def deletetweet(request, tweet_id): 

@@ -19,6 +19,9 @@ class Comment(models.Model):
 		return self.text_comment
 
 class TweetLike(models.Model):
-	status = models.CharField(max_length=40,  null=True, choices=[('like','like'),('dislike','dislike')])
-	tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, default=None)
+	status = models.CharField(max_length=40,  null=True)
+	tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, default=None, 
+		related_name='tweet_likes')
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.profile.user.username + ' ' + self.status
